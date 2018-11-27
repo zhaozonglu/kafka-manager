@@ -2,16 +2,14 @@ FROM openjdk:11.0.1-jdk
 
 MAINTAINER Zoro <zhaozonglu@gmail.com>
 
-ENV SCALA_VERSION 2.12.7 \
-	SBT_VERSION 1.2.6 \
-	ZK_HOSTS=localhost:2181 \
-    KM_VERSION=1.3.3.18
+ENV SCALA_VERSION 2.12.7
+ENV SBT_VERSION 1.2.6
 
 RUN touch /usr/lib/jvm/java-11-openjdk-amd64/release
 
 # Install Scala
 RUN \
-  curl -fsL https://downloads.lightbend.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/ && \
+  curl -fsL https://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /root/ && \
   echo >> /root/.bashrc && \
   echo "export PATH=~/scala-$SCALA_VERSION/bin:$PATH" >> /root/.bashrc
 
@@ -23,6 +21,9 @@ RUN \
   apt-get update && \
   apt-get install sbt && \
   sbt sbtVersion
+
+ENV ZK_HOSTS=localhost:2181 \
+    KM_VERSION=1.3.3.18
 
 # Install kafka-manager
 RUN mkdir -p /tmp && \
